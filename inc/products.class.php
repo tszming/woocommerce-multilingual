@@ -101,6 +101,9 @@ class WCML_Products{
         add_action('woocommerce_cart_loaded_from_session', array($this, 'translate_cart_subtotal'));
         add_action('woocommerce_before_calculate_totals',array($this,'woocommerce_calculate_totals'));
         
+        // Override cached widget id
+        add_filter('woocommerce_cached_widget_id', array($this, 'override_cached_widget_id'));
+
         if(defined('WPSEO_VERSION') && defined('WPSEO_PATH') && isset($_GET['tab']) && $_GET['tab'] == 'products'){
            require WPSEO_PATH . 'admin/class-metabox.php';
         }
@@ -2754,4 +2757,10 @@ function get_cart_attribute_translation($taxonomy,$attribute,$product_id,$tr_pro
         }
     }
 
+    function override_cached_widget_id($widget_id){
+         if (defined('ICL_LANGUAGE_CODE')){
+             $widget_id .= ':' . ICL_LANGUAGE_CODE;
+         }
+         return $widget_id;
+    }
 }
