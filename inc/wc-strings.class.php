@@ -87,8 +87,8 @@ class WCML_WC_Strings{
                 $title = get_the_title( $tr_parent ) . ' &rarr; ' . $title;    
             }
             
-            
-            $title = sprintf( '<a href="%s">%s</a>', $values['data']->get_permalink(), $title );
+            $permalink = add_query_arg( $values['data']->variation_data, get_permalink( $values['data']->id ) );
+            $title = sprintf( '<a href="%s">%s</a>', $permalink, $title );
                         
         }
         return $title;
@@ -205,7 +205,9 @@ class WCML_WC_Strings{
             $gateways = WC()->payment_gateways();
             foreach($gateways->payment_gateways as $key => $gateway){
                 if($gateway->id == $id){
-                    WC_Payment_Gateways::instance()->payment_gateways[$key]->instructions = icl_translate('woocommerce', $gateway->id .'_gateway_instructions', $gateway->instructions);
+                    if (isset($gateway->instructions)) {
+                        $gateway->instructions =icl_translate('woocommerce', $gateway->id .'_gateway_instructions', $gateway->instructions);
+                    }
                     break;
                 }
             }

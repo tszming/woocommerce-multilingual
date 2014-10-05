@@ -3,7 +3,13 @@
 global $woocommerce, $woocommerce_wpml;
 
 if(version_compare(preg_replace('#-(.+)$#', '', $woocommerce->version), '2.1', '<')){
-    
+   
+    if(!function_exists('WC')) {
+        function WC() {
+            return $GLOBALS['woocommerce'];
+        } 
+    }
+
     //wc_enqueue_js
     if(!function_exists('wc_enqueue_js')){
         function wc_enqueue_js($code){
